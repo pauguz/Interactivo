@@ -45,7 +45,7 @@ export default function Room() {
   };
 
   return (
-    <div style={{ borderWidth: 1, borderColor: 'black'}}>
+    <div style={{ borderWidth: 1, borderColor: 'black', height: '100vh'}}>
       
       <Titular  titulo={roomId} />
       <p>Tu rol: {role}</p>
@@ -54,12 +54,18 @@ export default function Room() {
         <strong>Mensaje del otro usuario:</strong>
         <p>{otherMessage || "—"}</p>
       </div>
-
-      <Escritorio
-        value={myMessage}
-        onChange={setMyMessage}
-        onSend={sendMessage}
-      />
+      <div style={{height:"50%", border:"black"}}>
+        A
+      </div>
+      <center>
+      <div style={{display: 'flex', width: '50%'}}>
+        <Escritorio
+          value={myMessage}
+          onChange={setMyMessage}
+          onSend={sendMessage}
+        />
+      </div>
+      </center>
     </div>
   );
 }

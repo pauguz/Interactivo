@@ -7,7 +7,7 @@ export default function Tests(){
                 <Titular titulo={"PRUEBAS"}/>
                 <div style={{width: "100%"}}>
                 <MessageBox/>
-                <Escritorio />
+                <Escritorio/>
                 </div>
             </center>)
 }
