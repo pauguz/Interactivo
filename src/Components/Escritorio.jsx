@@ -16,15 +16,17 @@ export default function Escritorio({ proporcion=90, value, onChange, onSend  }) 
         onChange={(e) => onChange(e.target.value)}
         type="textarea" 
         placeholder="Prueba"
-        maxLength={200}
+        maxLength={140}
 
         >
         </textarea>
-        <div style={{flexGrow: 1, backgroundColor: "gray", display: "flex",marginTop: 20, justifyContent: "center"  }}>
+        <div style={{flexGrow: 1, display: "flex",marginTop: 20, justifyContent: "center"  }}>
           <button 
           style={{width: "80%", borderRadius: 20}}
           onClick={onSend} disabled={!value}
-          />
+          >
+            &gt;
+          </button>
         </div>
       </div>
     );

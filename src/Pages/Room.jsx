@@ -5,6 +5,7 @@ import { db } from "../firebase";
 import Titular from "../Components/Titular";
 import MessageBox from "../components/MessageBox";
 import Escritorio from "../Components/Escritorio";
+import Bubble from "../Components/Bubble";
 
 function getRole(roomId) {
   const key = `role-${roomId}`;
@@ -23,25 +24,42 @@ export default function Room() {
   const role = getRole(roomId);
   const otherRole = role === "A" ? "B" : "A";
 
-  const [myMessage, setMyMessage] = useState("");
+  const [myDraft, setMyDraft] = useState("");
   const [otherMessage, setOtherMessage] = useState("");
+  const [myMessage, setMyMessage] = useState("");
+  const [last, setLast] = useState('');
 
-  // Escuchar cambios
+
+  // Escuchar cambios ajenos
   useEffect(() => {
-    const roomRef = ref(db, `rooms/${roomId}`);
-
-    return onValue(roomRef, (snapshot) => {
+    const roomRef = ref(db, `rooms/${roomId}/${otherRole}`); //entra a esa direccion de la bd
+    const unsuscribe = onValue(roomRef, (snapshot) => {
       const data = snapshot.val();
-      if (data && data[otherRole]) {
-        setOtherMessage(data[otherRole]);
+      if (data) {
+        setOtherMessage(data);
       }
+
     });
+    return ()=>unsuscribe();
   }, [roomId, otherRole]);
+
+    // Escuchar cambios propios
+    useEffect(() => {
+      const roomRef = ref(db, `rooms/${roomId}/${role}`); //entra a esa direccion de la bd
+      const unsuscribe = onValue(roomRef, (snapshot) => {
+        const data = snapshot.val();
+
+        if (data ) {
+          setMyMessage(data);
+        }
+      });
+      return ()=>unsuscribe();
+    }, [roomId, otherRole]);
 
   // Enviar mensaje (sobrescribe)
   const sendMessage = () => {
-    set(ref(db, `rooms/${roomId}/${role}`), myMessage);
-    setMyMessage("");
+    set(ref(db, `rooms/${roomId}/${role}`), myDraft);
+    setMyDraft("");
   };
 
   return (
@@ -51,17 +69,21 @@ export default function Room() {
       <p>Tu rol: {role}</p>
 
       <div>
-        <strong>Mensaje del otro usuario:</strong>
-        <p>{otherMessage || "—"}</p>
+        <strong>Tu mensaje:</strong>
+        <Bubble text={myMessage}/>
       </div>
-      <div style={{height:"50%", border:"black"}}>
+      <div>
+        <strong>Mensaje del otro usuario:</strong>
+        <Bubble text={otherMessage}/>
+      </div>
+      <div style={{height:"40%", border:"black"}}>
         A
       </div>
       <center>
       <div style={{display: 'flex', width: '50%'}}>
         <Escritorio
-          value={myMessage}
-          onChange={setMyMessage}
+          value={myDraft}
+          onChange={setMyDraft}
           onSend={sendMessage}
         />
       </div>
