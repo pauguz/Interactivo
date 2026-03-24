@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { generateRoomId } from "../utils/roomId";
+import Titular from "../Components/Titular";
+import './styles/Home.css'
 
 export default function Home() {
   const navigate = useNavigate();
@@ -10,10 +12,13 @@ export default function Home() {
   };
 
   return (
-    <div style={{ borderWidth: 1}} id="generador">
-      <h1>Chat efímero</h1>
-      <p>Crea una sala y comparte el enlace</p>
-      <button onClick={createRoom}>Crear sala</button>
+    <div>
+      <Titular titulo={'Inicio'}/>
+      <div id="generador">
+        <h1>Chat efímero</h1>
+        <p>Crea una sala y comparte el enlace</p>
+        <div><button onClick={createRoom}>Crear sala</button></div> 
+      </div>
     </div>
   );
 }
